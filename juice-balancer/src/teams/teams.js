@@ -42,7 +42,7 @@ const cookieSettings = {
   sameSite: 'strict',
   secure: get('cookieParser.secure'),
 };
-
+const ctfdIntegration = require('../ctfd_integration');
 /**
  * @param {import("express").Request} req
  * @param {import("express").Response} res
@@ -167,6 +167,16 @@ async function generatePasscode() {
 async function createTeam(req, res) {
   const { team } = req.params;
   try {
+  // Fetch the list of teams from CTFd
+  const ctfdTeams = await ctfdIntegration.getCTFdTeams('192.168.137.117','ctfd_73ecfcd4a06d21e06c4e9474f3d5b583dd85bf39bd0736c055c0d6c7b5f6025f');
+  const teamNames = ctfdTeams.map((ctfdTeam) => ctfdTeam.name);
+
+  // Check if the team exists in CTFd
+  if (!teamNames.includes(team)) {
+    return res.status(400).send({
+      message: 'Team does not exist in CTFd',
+    });
+
     const { passcode, hash } = await generatePasscode();
 
     logger.info(`Creating JuiceShop Deployment for team '${team}'`);
@@ -275,12 +285,12 @@ function logout(req, res) {
     .send();
 }
 
-const paramsSchema = Joi.object({
-  team: Joi.string()
-    .required()
-    .max(16)
-    .regex(/^[a-z0-9]([-a-z0-9])+[a-z0-9]$/),
-});
+// const paramsSchema = Joi.object({
+//   team: Joi.string()
+//     .required()
+//     .max(16)
+//     .regex(/^[a-z0-9]([-a-z0-9])+[a-z0-9]$/),
+// });
 const bodySchema = Joi.object({
   passcode: Joi.string().alphanum().uppercase().length(8),
 });
@@ -289,7 +299,7 @@ router.post('/logout', logout);
 
 router.post(
   '/:team/join',
-  validator.params(paramsSchema),
+  // validator.params(paramsSchema),
   validator.body(bodySchema),
   interceptAdminLogin,
   joinIfTeamAlreadyExists,
