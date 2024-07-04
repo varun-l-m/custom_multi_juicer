@@ -175,7 +175,7 @@ async function createTeam(req, res) {
   if (!teamNames.includes(team)) {
     return res.status(400).send({
       message: 'Team does not exist in CTFd',
-    });
+    });}
 
     const { passcode, hash } = await generatePasscode();
 
