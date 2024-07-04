@@ -309,6 +309,6 @@ router.post(
 
 router.post('/reset-passcode', resetPasscode);
 
-router.get('/:team/wait-till-ready', validator.params(paramsSchema), awaitReadiness);
+//router.get('/:team/wait-till-ready', validator.params(paramsSchema), awaitReadiness);
 
 module.exports = router;
