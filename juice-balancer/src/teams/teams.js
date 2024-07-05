@@ -262,10 +262,10 @@ async function awaitReadiness(req, res) {
 
       await sleep(1000);
     }
-
     logger.error(`Waiting for deployment of team '${team}' timed out`);
     res.status(500).send({ message: 'Waiting for Deployment Readiness Timed Out' });
-  } catch (error) {
+  } 
+  catch (error) {
     logger.error(`Failed to wait for teams '${team}' deployment to get ready`);
     logger.error(error);
     res.status(500).send({ message: 'Failed to Wait For Deployment Readiness' });
