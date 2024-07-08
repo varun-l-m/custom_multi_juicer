@@ -168,7 +168,7 @@ async function createTeam(req, res) {
   const { team } = req.params;
   try {
   // Fetch the list of teams from CTFd
-  const ctfdTeams = await ctfdIntegration.getCTFdTeams('192.168.137.117','ctfd_73ecfcd4a06d21e06c4e9474f3d5b583dd85bf39bd0736c055c0d6c7b5f6025f');
+  const ctfdTeams = await ctfdIntegration.getCTFdTeams('192.168.137.117','ctfd_d22a2068065c58cd87f952b811e8a615fc1c2b12cc9b75d2bf2c6c88dcd3b912');
   const teamNames = ctfdTeams.map((ctfdTeam) => ctfdTeam.name);
 
   // Check if the team exists in CTFd
