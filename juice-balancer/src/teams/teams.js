@@ -285,12 +285,12 @@ function logout(req, res) {
     .send();
 }
 
-// const paramsSchema = Joi.object({
-//   team: Joi.string()
-//     .required()
-//     .max(16)
-//     .regex(/^[a-z0-9]([-a-z0-9])+[a-z0-9]$/),
-// });
+const paramsSchema = Joi.object({
+  team: Joi.string()
+    .required()
+    .max(16)
+    .regex(/^[a-z0-9]([-a-z0-9])+[a-z0-9]$/),
+});
 const bodySchema = Joi.object({
   passcode: Joi.string().alphanum().uppercase().length(8),
 });
@@ -299,7 +299,7 @@ router.post('/logout', logout);
 
 router.post(
   '/:team/join',
-  // validator.params(paramsSchema),
+  validator.params(paramsSchema),
   validator.body(bodySchema),
   interceptAdminLogin,
   joinIfTeamAlreadyExists,
@@ -309,6 +309,6 @@ router.post(
 
 router.post('/reset-passcode', resetPasscode);
 
-//router.get('/:team/wait-till-ready', validator.params(paramsSchema), awaitReadiness);
+router.get('/:team/wait-till-ready', validator.params(paramsSchema), awaitReadiness);
 
 module.exports = router;
